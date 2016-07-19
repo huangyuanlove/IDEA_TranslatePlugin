@@ -9,22 +9,9 @@ public class TranslateBean {
 
 
     private BasicBean basic;
-    /**
-     * translation : ["翻译"]
-     * basic : {"explains":["vt. 翻译；转化；解释；转变为；调动","vi. 翻译"]}
-     * query : translate
-     * errorCode : 0
-     * web : [{"value":["翻译","转化","协议转换信息"],"key":"translate"},{"value":["线上翻译","平移工具","移动工具"],"key":"Translate Tool"},{"value":["翻译它","翻译","将其翻译"],"key":"translate it"}]
-     */
-
     private String query;
     private int errorCode;
     private List<String> translation;
-    /**
-     * value : ["翻译","转化","协议转换信息"]
-     * key : translate
-     */
-
     private List<WebBean> web;
 
     public BasicBean getBasic() {
@@ -79,9 +66,6 @@ public class TranslateBean {
             this.phonetic = phonetic;
         }
 
-
-
-
         public List<String> getExplains() {
             return explains;
         }
@@ -111,12 +95,7 @@ public class TranslateBean {
             this.value = value;
         }
 
-
-
-
-
     }
-
 
     @Override
     public String toString() {
@@ -138,9 +117,6 @@ public class TranslateBean {
         {
             translateBuffer.append(basic.getExplains().get(i) +"\n");
         }
-
-
-
         return query +"\n" + basic.getPhonetic() +"\n" + translateBuffer.toString() +"\n网络释义+\n" + webStringBuffer.toString();
     }
 }

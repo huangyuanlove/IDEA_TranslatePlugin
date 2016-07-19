@@ -5,21 +5,12 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.*;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.event.EditorMouseEventArea;
-import com.intellij.openapi.editor.event.EditorMouseListener;
-import com.intellij.openapi.editor.event.EditorMouseMotionListener;
-import com.intellij.openapi.editor.markup.MarkupModel;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.ui.popup.Balloon;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.util.Key;
 import com.intellij.ui.JBColor;
 import org.apache.http.util.TextUtils;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -36,6 +27,7 @@ import java.net.URLEncoder;
  */
 public class TranslateAction extends AnAction {
 
+    //有道翻译接口
     private String translateUrl = "http://fanyi.youdao.com/openapi.do?keyfrom=AS-TranslatePlugin&key=346994278&type=data&doctype=json&version=1.1&q=%s";
 
 
@@ -45,6 +37,7 @@ public class TranslateAction extends AnAction {
             return;
         }
         SelectionModel model = mEditor.getSelectionModel();
+        //获取选中的文字
         final String selectedText = model.getSelectedText();
         if (TextUtils.isEmpty(selectedText)) {
             return;
@@ -57,7 +50,12 @@ public class TranslateAction extends AnAction {
 
     }
 
-
+    /**
+     *
+     * @param translateText 需要翻译的文本
+     * @return TranslateBean 翻译完成后转换为对象
+     * 调用翻译接口，将返回的数据用Gson封装为对象
+     */
     private TranslateBean doTranslate(String translateText) {
         Gson gson = new Gson();
         InputStream is = null;
@@ -91,6 +89,13 @@ public class TranslateAction extends AnAction {
         return null;
     }
 
+
+    /**
+     *
+     * @param editor Edit
+     * @param result 要展示的文字
+     *  以类似popupwindow的形式展示，别问我为什么这么写，我也不知道，我是抄的api
+     */
     private void showPopupBalloon(final Editor editor, final String result) {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             public void run() {
